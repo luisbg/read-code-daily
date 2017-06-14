@@ -24,20 +24,24 @@ fn run(folder: &str) -> Result<()> {
     // List recusively all accessible files in the current directory
     for entry in WalkDir::new(folder).into_iter().filter_map(|e| e.ok()) {
         // Get entry's filename
-        let file_path = entry.path().to_str().unwrap();
+        if let Some(file_path) = entry.path().to_str() {
+            // Add C files to collection
+            if file_path.ends_with(".c") {
+                files.push(String::from(file_path));
+            }
+        } 
+    }
 
-        // Add C files to collection
-        if file_path.ends_with(".c") {
-            files.push(String::from(file_path));
+    if files.len() > 0 {
+        // Print random file from the collection
+        let mut rng = rand::thread_rng();
+        match files.get(rng.gen_range(0, files.len())) {
+            Some(x) => println!("{}", x),
+            None => (),
         }
-    }
 
-    // Print random file from the collection
-    let mut rng = rand::thread_rng();
-    match files.get(rng.gen_range(0, files.len())) {
-        Some(x) => println!("{}", x),
-        None => (),
-    }
+        
+    } 
 
     Ok(())
 }
