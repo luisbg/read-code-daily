@@ -1,5 +1,5 @@
 [package]
-name = "linux-daily"
+name = "read-code-daily"
 version = "0.1.0"
 authors = ["Luis de Bethencourt <luis@debethencourt.com>"]
 
