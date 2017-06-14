@@ -7,3 +7,4 @@ authors = ["Luis de Bethencourt <luis@debethencourt.com>"]
 walkdir = "*"
 error-chain = "*"
 clap = "*"
+rand = "*"
