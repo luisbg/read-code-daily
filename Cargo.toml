@@ -1,0 +1,8 @@
+[package]
+name = "linux-daily"
+version = "0.1.0"
+authors = ["Luis de Bethencourt <luis@debethencourt.com>"]
+
+[dependencies]
+walkdir = "*"
+error-chain = "*"
