@@ -24,11 +24,11 @@ fn run(folder: &str) -> Result<()> {
     // List recusively all accessible files in the current directory
     for entry in WalkDir::new(folder).into_iter().filter_map(|e| e.ok()) {
         // Get entry's filename
-        let f_name = entry.file_name().to_string_lossy();
+        let file_path = entry.path().to_str().unwrap();
 
         // Add C files to collection
-        if f_name.ends_with(".c") {
-            files.push(f_name.into_owned());
+        if file_path.ends_with(".c") {
+            files.push(String::from(file_path));
         }
     }
 
