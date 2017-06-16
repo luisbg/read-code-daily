@@ -20,7 +20,7 @@ error_chain! {
     }
 }
 
-fn run(folder: &str, extension: &str, num_files: u32) -> Result<()> {
+fn run(folder: &str, extension: &str, num_files: usize) -> Result<()> {
     let mut files: Vec<String> = Vec::new();
 
     // List recusively all accessible files in the current directory
@@ -41,12 +41,19 @@ fn run(folder: &str, extension: &str, num_files: u32) -> Result<()> {
         process::exit(0);
     }
 
-    // Print random file from the collection
-    let mut rng = rand::thread_rng();
-    for _ in 0..num_files {
-        match files.get(rng.gen_range(0, files.len())) {
-            Some(x) => println!("{}", x),
-            None => (),
+    if files.len() <= num_files {
+        // Print all files from the collection
+        for f in files.into_iter() {
+            println!("{}", f);
+        }
+    } else {
+        // Print random num_file's from the collection
+        let mut rng = rand::thread_rng();
+        for _ in 0..num_files {
+            match files.get(rng.gen_range(0, files.len())) {
+                Some(f) => println!("{}", f),
+                None => (),
+            }
         }
     }
 
@@ -81,7 +88,7 @@ fn main () {
     println!("The folder passed is: {}", folder);
 
     let extension = matches.value_of("extension").unwrap_or("c");
-    let num_files = value_t!(matches, "num", u32).unwrap_or(1);
+    let num_files = value_t!(matches, "num", usize).unwrap_or(1);
 
     run(folder, extension, num_files).unwrap();
 }
