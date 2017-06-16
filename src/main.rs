@@ -1,6 +1,7 @@
 extern crate walkdir;
 #[macro_use]
 extern crate error_chain;
+#[macro_use]
 extern crate clap;
 extern crate rand;
 
@@ -19,7 +20,7 @@ error_chain! {
     }
 }
 
-fn run(folder: &str, extension: &str) -> Result<()> {
+fn run(folder: &str, extension: &str, num_files: u32) -> Result<()> {
     let mut files: Vec<String> = Vec::new();
 
     // List recusively all accessible files in the current directory
@@ -42,9 +43,11 @@ fn run(folder: &str, extension: &str) -> Result<()> {
 
     // Print random file from the collection
     let mut rng = rand::thread_rng();
-    match files.get(rng.gen_range(0, files.len())) {
-        Some(x) => println!("{}", x),
-        None => (),
+    for _ in 0..num_files {
+        match files.get(rng.gen_range(0, files.len())) {
+            Some(x) => println!("{}", x),
+            None => (),
+        }
     }
 
     Ok(())
@@ -66,6 +69,11 @@ fn main () {
              .long("extension")
              .takes_value(true)
              .help("Extension to look for"))
+        .arg(Arg::with_name("num")
+             .short("n")
+             .long("number")
+             .takes_value(true)
+             .help("Number of files to return"))
         .get_matches();
 
     // Get value for folder, or default to '.'
@@ -73,5 +81,7 @@ fn main () {
     println!("The folder passed is: {}", folder);
 
     let extension = matches.value_of("extension").unwrap_or("c");
-    run(folder, extension).unwrap();
+    let num_files = value_t!(matches, "num", u32).unwrap_or(1);
+
+    run(folder, extension, num_files).unwrap();
 }
