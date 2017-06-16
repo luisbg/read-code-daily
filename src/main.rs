@@ -19,15 +19,17 @@ error_chain! {
     }
 }
 
-fn run(folder: &str) -> Result<()> {
+fn run(folder: &str, extension: &str) -> Result<()> {
     let mut files: Vec<String> = Vec::new();
 
     // List recusively all accessible files in the current directory
     for entry in WalkDir::new(folder).into_iter().filter_map(|e| e.ok()) {
+        let dotted_extension = [".", extension].concat();
+
         // Get entry's filename
         if let Some(file_path) = entry.path().to_str() {
-            // Add C files to collection
-            if file_path.ends_with(".c") {
+            // Add source files to collection
+            if file_path.ends_with(&dotted_extension) {
                 files.push(String::from(file_path));
             }
         }
@@ -59,11 +61,17 @@ fn main () {
                  .long("file")
                  .takes_value(true)
                  .help("A cool file"))
+        .arg(Arg::with_name("extension")
+             .short("e")
+             .long("extension")
+             .takes_value(true)
+             .help("Extension to look for"))
         .get_matches();
 
     // Get value for folder, or default to '.'
     let folder = matches.value_of("folder").unwrap_or(".");
     println!("The folder passed is: {}", folder);
 
-    run(folder).unwrap();
+    let extension = matches.value_of("extension").unwrap_or("c");
+    run(folder, extension).unwrap();
 }
