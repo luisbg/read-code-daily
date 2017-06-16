@@ -8,6 +8,7 @@ use walkdir::WalkDir;
 use std::io;
 use clap::{Arg, App};
 use rand::Rng;
+use std::process;
 
 error_chain! {
     // Error types from other libraries that we want to just wrap
@@ -32,13 +33,16 @@ fn run(folder: &str) -> Result<()> {
         }
     }
 
-    if files.len() > 0 {
-        // Print random file from the collection
-        let mut rng = rand::thread_rng();
-        match files.get(rng.gen_range(0, files.len())) {
-            Some(x) => println!("{}", x),
-            None => (),
-        }
+    if files.len() == 0 {
+        println!("No files found. Try a different folder");
+        process::exit(0);
+    }
+
+    // Print random file from the collection
+    let mut rng = rand::thread_rng();
+    match files.get(rng.gen_range(0, files.len())) {
+        Some(x) => println!("{}", x),
+        None => (),
     }
 
     Ok(())
