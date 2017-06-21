@@ -36,7 +36,7 @@ fn run(folder: &str, extension: &str, num_files: usize) -> Result<()> {
         }
     }
 
-    if files.len() == 0 {
+    if files.is_empty() {
         println!("No files found. Try a different folder");
         process::exit(0);
     }
