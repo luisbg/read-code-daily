@@ -43,7 +43,7 @@ fn run(folder: &str, extension: &str, num_files: usize) -> Result<()> {
 
     if files.len() <= num_files {
         // Print all files from the collection
-        for f in files.into_iter() {
+        for f in files {
             println!("{}", f);
         }
     } else {
