@@ -51,9 +51,8 @@ fn run(folder: &str, extension: &str, num_files: usize) -> Result<()> {
         let mut rng = rand::thread_rng();
         for _ in 0..num_files {
             let index = rng.gen_range(0, files.len());
-            match files.get(index) {
-                Some(f) => println!("{}", f),
-                None => (),
+            if let Some(f) = files.get(index) {
+                println!("{}", f)
             }
             files.remove(index);
         }
