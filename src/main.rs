@@ -50,10 +50,12 @@ fn run(folder: &str, extension: &str, num_files: usize) -> Result<()> {
         // Print random num_file's from the collection
         let mut rng = rand::thread_rng();
         for _ in 0..num_files {
-            match files.get(rng.gen_range(0, files.len())) {
+            let index = rng.gen_range(0, files.len());
+            match files.get(index) {
                 Some(f) => println!("{}", f),
                 None => (),
             }
+            files.remove(index);
         }
     }
 
