@@ -63,10 +63,10 @@ fn run(folder: &str, extension: &str, num_files: usize) -> Result<()> {
 
 fn main () {
     // Define command line arguments.
-    let matches = App::new("linux-daily")
+    let matches = App::new("read-code-daily")
         .version("0.1.0")
         .author("Luis de Bethencourt <luis@debethencourt.com>")
-        .about("Pick a random C file")
+        .about("Pick a random source code file to read")
         .arg(Arg::with_name("folder")
              .short("f")
              .long("folder")
